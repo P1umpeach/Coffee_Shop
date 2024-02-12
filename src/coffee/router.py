@@ -20,7 +20,11 @@ fake_coffee = [
 
 @router.get("/coffee/{coffee_id}", response_model=List[Coffee])
 def get_coffee(coffee_id: int):
-    return [coffee for coffee in fake_coffee if coffee.get("id") == coffee_id]
+    coffee_list = [coffee for coffee in fake_coffee if coffee.get("id") == coffee_id]
+    if not coffee_list:
+        raise HTTPException(status_code=404, detail="Coffee not found")
+
+    return coffee_list
 
 
 @router.post("/coffee")
